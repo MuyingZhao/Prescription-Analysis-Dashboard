@@ -23,7 +23,7 @@ class Database:
 
     def get_average_ACT_cost(self):
         """Return the average ACT cost."""
-        return float(db.session.query(func.avg(PrescribingData.ACT_cost)).first()[0])
+        return round(float(db.session.query(func.avg(PrescribingData.ACT_cost)).first()[0]), 2)
 
     def get_number_of_unique_items(self):
         ''' return the number of unique items'''
