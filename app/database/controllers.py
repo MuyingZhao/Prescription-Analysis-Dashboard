@@ -12,6 +12,8 @@ from flask import Blueprint
 
 from app import db
 from app.database.models import PrescribingData, PracticeData
+import sqlite3
+from sqlalchemy import literal_column
 
 database = Blueprint('dbutils', __name__, url_prefix='/dbutils')
 
@@ -32,3 +34,20 @@ class Database:
     def get_n_data_for_PCT(self, pct, n):
         """Return all the data for a given PCT."""
         return db.session.query(PrescribingData).filter(PrescribingData.PCT == pct).limit(n).all()
+
+    def get_average_ACTCOST(self):
+        return round ((db.session.query(func.avg(PrescribingData.ACT_cost)).first()[0]), 2)
+
+    def get_TOP_PRESCRIBED_ITEM(self):
+        conn = sqlite3.connect('abxdb.db')
+        cursor = conn.cursor()
+        bnf_name = "Methadone HCl_Oral Soln 1mg/1ml S/F"
+        cursor.execute("select BNFNAME, MAX(quantity), MAX(quantity)/sum(quantity) from practice_level_prescribing where BNFNAME = ?", (bnf_name,))
+        result = cursor.fetchone()
+        max_name = result[0]
+        #max_name = literal_column(max_name)
+        max_value = result[1]
+        max_pre = result[2]
+        conn.close()
+        #print(max_name)
+        return str (db.session.query(max_name).first()[0]), int (db.session.query(max_value).first()[0]), round((db.session.query(max_pre).first()[0]), 4)
