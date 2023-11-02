@@ -37,6 +37,20 @@ class Database:
         return db.session.query(func)
 
 
+    def get_average_ACT_cost(self):
+        """Return the average ACT cost."""
+        return round(float(db.session.query(func.avg(PrescribingData.ACT_cost)).first()[0]), 2)
+
+    def get_number_of_unique_items(self):
+        ''' return the number of unique items'''
+        return int(db.session.query(func.count(func.distinct(PrescribingData.BNF_code))).first()[0])
+
+    def get_top_prescribed_item(self):
+        """return the description of the item with the max quantity, and a percentage bar showing what % of all prescriptions this is"""
+        # 使用 SQLAlchemy 查询语法
+        return db.session.query(func)
+
+
     def get_prescribed_items_per_pct(self):
         return db.session.query(func.sum(PrescribingData.items).label("item_sum")).group_by(PrescribingData.PCT).all()
 
