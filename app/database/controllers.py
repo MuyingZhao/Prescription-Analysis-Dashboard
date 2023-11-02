@@ -68,13 +68,10 @@ class Database:
     def get_TOP_PRESCRIBED_ITEM(self):
         conn = sqlite3.connect('abxdb.db')
         cursor = conn.cursor()
-        bnf_name = "Methadone HCl_Oral Soln 1mg/1ml S/F"
-        cursor.execute("select BNFNAME, MAX(quantity), MAX(quantity)/sum(quantity) from practice_level_prescribing where BNFNAME = ?", (bnf_name,))
+        cursor.execute("select BNFNAME, MAX(quantity), MAX(quantity)/sum(quantity) from practice_level_prescribing")
         result = cursor.fetchone()
         max_name = result[0]
-        #max_name = literal_column(max_name)
         max_value = result[1]
         max_pre = result[2]
         conn.close()
-        #print(max_name)
-        return str (db.session.query(max_name).first()[0]), int (db.session.query(max_value).first()[0]), round((db.session.query(max_pre).first()[0]), 4)
+        return max_name, int(max_value), round(max_pre,4)
