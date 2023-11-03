@@ -52,6 +52,6 @@ class Database:
         result = cursor.fetchone()
         max_name = result[0]
         max_value = result[1]
-        max_pre = result[2]
+        max_pre = result[2]*100
         conn.close()
-        return str (db.session.query(max_name).first()[0]), int (db.session.query(max_value).first()[0]), round((db.session.query(max_pre).first()[0]), 4)
+        return max_name, int(max_value), round(max_pre, 2)
