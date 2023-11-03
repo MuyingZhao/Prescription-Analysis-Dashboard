@@ -1,0 +1,11 @@
+How to add code (process):
+1.Database/models.py :
+transform database’s data to object (Alan had done all, which means we don’t need to do anything in this file)
+2.Database/controller.py :
+write the functions calculate the results that need (use the data in database to calculate the results that we need)
+3.View/controllers.py :
+generate the data for the four home page tiles(by using the functions that we write in Database/controller.py)
+4.Templates/dashboard/index.html :
+show data(we generate the data in View/controllers.py) on dashboard
+5.Tests/test_database.py :
+Test whether the results that we calculated are correct
