@@ -12,6 +12,8 @@ from flask import Blueprint
 
 from app import db
 from app.database.models import PrescribingData, PracticeData
+import sqlite3
+from sqlalchemy import literal_column
 
 database = Blueprint('dbutils', __name__, url_prefix='/dbutils')
 
@@ -20,6 +22,20 @@ class Database:
     def get_total_number_items(self):
         """Return the total number of prescribed items."""
         return int(db.session.query(func.sum(PrescribingData.items).label('total_items')).first()[0])
+
+    def get_average_ACT_cost(self):
+        """Return the average ACT cost."""
+        return float(db.session.query(func.avg(PrescribingData.ACT_cost)).first()[0])
+
+    def get_number_of_unique_items(self):
+        ''' return the number of unique items'''
+        return int(db.session.query(func.count(func.distinct(PrescribingData.BNF_code))).first()[0])
+
+    def get_top_prescribed_item(self):
+        """return the description of the item with the max quantity, and a percentage bar showing what % of all prescriptions this is"""
+        # 使用 SQLAlchemy 查询语法
+        return db.session.query(func)
+
 
     def get_average_ACT_cost(self):
         """Return the average ACT cost."""
@@ -45,3 +61,19 @@ class Database:
     def get_n_data_for_PCT(self, pct, n):
         """Return all the data for a given PCT."""
         return db.session.query(PrescribingData).filter(PrescribingData.PCT == pct).limit(n).all()
+
+    #平均ACTCOST
+    def get_average_ACTCOST(self):
+        return round ((db.session.query(func.avg(PrescribingData.ACT_cost)).first()[0]), 2)
+
+    #最大数量的药品名称、数量、比例
+    def get_TOP_PRESCRIBED_ITEM(self):
+        conn = sqlite3.connect('abxdb.db')
+        cursor = conn.cursor()
+        cursor.execute("select BNFNAME, MAX(quantity), MAX(quantity)/sum(quantity) from practice_level_prescribing")
+        result = cursor.fetchone()
+        max_name = result[0]
+        max_value = result[1]
+        max_pre = result[2]
+        conn.close()
+        return max_name, int(max_value), round(max_pre,4)
