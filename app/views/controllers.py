@@ -34,7 +34,6 @@ def home():
     bar_values = bar_data[0]
     bar_labels = bar_data[1]
     title_data_items = generate_data_for_tiles()
-    #db_mod.get_average_ACTCOST()
 
     # render the HTML page passing in relevant data
     return render_template('dashboard/index.html', tile_data=title_data_items,
@@ -43,7 +42,7 @@ def home():
 
 def generate_data_for_tiles():
     """Generate the data for the four home page titles."""
-    return [db_mod.get_total_number_items(), db_mod.get_average_ACTCOST(), db_mod.get_TOP_PRESCRIBED_ITEM()]
+    return [db_mod.get_total_number_items(), db_mod.get_average_ACT_cost(), db_mod.get_TOP_PRESCRIBED_ITEM(), db_mod.get_number_of_unique_items()]
 
 def generate_barchart_data():
     """Generate the data needed to populate the barchart."""
