@@ -62,9 +62,11 @@ class Database:
         """Return all the data for a given PCT."""
         return db.session.query(PrescribingData).filter(PrescribingData.PCT == pct).limit(n).all()
 
+    #平均ACTCOST
     def get_average_ACTCOST(self):
         return round ((db.session.query(func.avg(PrescribingData.ACT_cost)).first()[0]), 2)
 
+    #最大数量的药品名称、数量、比例
     def get_TOP_PRESCRIBED_ITEM(self):
         conn = sqlite3.connect('abxdb.db')
         cursor = conn.cursor()
