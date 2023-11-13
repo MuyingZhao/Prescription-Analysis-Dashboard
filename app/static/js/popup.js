@@ -66,19 +66,15 @@ function Popup()
 
     popup.calculateCreatinineClearance = function()
     {
-    // 获取用户输入
     var gender = document.querySelector('input[name="sex"]:checked').value;
     var age = parseInt(document.querySelector('input[name="patients-age"]').value);
     var weight = parseInt(document.querySelector('input[name="patients-weight"]').value);
     var serumCreatinine = parseFloat(document.querySelector('input[name="patients-serum"]').value);
 
-    // Cockroft-Gault方程的常数
     var constant = (gender === "m") ? 1.23 : 1.04;
 
-    // 应用Cockroft-Gault方程
     var creatinineClearance = ((140 - age) * weight) / (72 * serumCreatinine) * constant;
 
-    // 显示结果
     var resultElement = document.getElementById('result');
     resultElement.innerHTML = '<p>Creatinine Clearance: ' + creatinineClearance.toFixed(2) + ' ml/min</p>';
     }
