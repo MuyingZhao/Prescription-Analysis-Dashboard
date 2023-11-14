@@ -11,7 +11,7 @@ DESCRIPTION:   Suite of tests for testing the dashboards database
 
 import unittest
 import sys
-sys.path.append('D:\\miekeleton\\mie_G14')
+sys.path.append('/Users/zhaomuying/Desktop/MIE/mieskeleton/mie_G14')
 
 from app import app
 from app.database.controllers import Database
@@ -36,6 +36,7 @@ class DatabaseTests(unittest.TestCase):
         with app.app_context():
             self.assertEquals(self.db_mod.get_average_ACT_cost(), 76.22, 'Test average ACT cost returns correct value')
             self.assertFalse(self.db_mod.get_average_ACT_cost(), 'Test average ACT cost returns incorrect value')
+
     def test_get_TOP_PRESCRIBED_ITEM(self):
         """Test that top prescribed item."""
         with app.app_context():
@@ -48,16 +49,6 @@ class DatabaseTests(unittest.TestCase):
             self.assertEquals(self.db_mod.get_number_of_unique_items(), 13935, 'Test number of unique items return correct value')
             self.assertFalse(self.db_mod.get_number_of_unique_items(), 'Test number of unique items return incorrect value')
 
-
-
-
-    def test_average_ACT_cost(self):
-        """Test that the average ACT cost returns the correct value."""
-        self.assertEquals(self.db_mod.get_average_ACT_cost(), 76.22, 'Test average ACT cost')
-
-    def test_get_number_of_unique_items(self):
-        """Test that the number of unique items returns the correct value."""
-        self.assertEquals(self.db_mod.get_number_of_unique_items(), 13935, 'Test number of unique items')
 
 
 if __name__ == "__main__":
