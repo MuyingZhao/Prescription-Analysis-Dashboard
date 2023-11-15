@@ -39,6 +39,11 @@ function Popup()
     // hide the creatinine clearance calculator form dialog
     popup.hideCeatCalcFormPopup = function()
     {
+        document.querySelector('input[name="sex"]:checked').checked = false;
+        document.querySelector('input[name="patients-age"]').value = '';
+        document.querySelector('input[name="patients-weight"]').value = '';
+        document.querySelector('input[name="patients-serum"]').value = '';
+
         this.hideMask();
         this.entryFormPopup.style.display = "none";
     }
@@ -54,6 +59,7 @@ function Popup()
     // hide about popup
     popup.hideAboutPopup = function()
     {
+
         this.hideMask();
         this.aboutPopup.style.display = "none";
     }
@@ -66,10 +72,26 @@ function Popup()
 
     popup.calculateCreatinineClearance = function()
     {
+
     var gender = document.querySelector('input[name="sex"]:checked').value;
     var age = parseInt(document.querySelector('input[name="patients-age"]').value);
     var weight = parseInt(document.querySelector('input[name="patients-weight"]').value);
     var serumCreatinine = parseFloat(document.querySelector('input[name="patients-serum"]').value);
+
+    if (isNaN(age) || age < 1 || age > 120) {
+        alert("Please enter a valid age between 1 and 120 years.");
+        return;
+    }
+
+    if (isNaN(weight) || weight < 1 || weight > 120) {
+        alert("Please enter a valid weight between 1 and 120 kg.");
+        return;
+    }
+
+    if (isNaN(serumCreatinine) || serumCreatinine < 1 || serumCreatinine > 120) {
+        alert("Please enter a valid serum creatinine between 1 and 120 micromol/L.");
+        return;
+    }
 
     var constant = (gender === "m") ? 1.23 : 1.04;
 
