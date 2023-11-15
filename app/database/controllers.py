@@ -13,6 +13,7 @@ from flask import Blueprint
 from app import db
 from app.database.models import PrescribingData, PracticeData
 import sqlite3
+from sqlalchemy import cast, String
 from sqlalchemy import literal_column
 
 database = Blueprint('dbutils', __name__, url_prefix='/dbutils')
@@ -55,3 +56,9 @@ class Database:
         max_pre = result[2]*100
         conn.close()
         return max_name, int(max_value), round(max_pre, 2)
+
+    def get_infection_data(self,code):
+        """Return the total numbers of five infection treatment."""
+        return db.session.query(func.sum(PrescribingData.items).label('infection_sum')).filter(PrescribingData.BNF_code.like(code)).first()[0]
+
+
