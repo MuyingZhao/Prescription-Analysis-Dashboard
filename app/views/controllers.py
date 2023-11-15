@@ -35,10 +35,16 @@ def home():
     bar_labels = bar_data[1]
     title_data_items = generate_data_for_tiles()
 
+    #infection_treatment_bar_data = generate_infection_treatment_drug_barchart()
+    #infection_treatment_bar_values = infection_treatment_bar_data[0]
+    #infection_treatment_bar_labels = infection_treatment_bar_data[1]
+
     # render the HTML page passing in relevant data
     return render_template('dashboard/index.html', tile_data=title_data_items,
                            pct={'data': bar_values, 'labels': bar_labels},
-                           pct_list=pcts, pct_data=selected_pct_data)
+                           pct_list=pcts, pct_data=selected_pct_data,)
+                           #infection_prescribing={'data': infection_treatment_bar_values, 'labels': infection_treatment_bar_labels})
+                           #infection_prescribing_list=pcts, infection_prescribing_data=selected_pct_data
 
 def generate_data_for_tiles():
     """Generate the data for the four home page titles."""
@@ -53,5 +59,24 @@ def generate_barchart_data():
     data_values = [r[0] for r in data_values]
     pct_codes = [r[0] for r in pct_codes]
     return [data_values, pct_codes]
+
+#def generate_infection_treatment_drug_barchart():
+    #percentage = db_mod.get_percentage_of_bnf_prefix()
+    #infection_prescribing = ['Antibacterials', 'Antifungal', 'Antiviral', 'Antiprotozoal', 'Anthelminics']
+
+    # convert into lists and return
+    #percentage = [r[0] for r in percentage]
+    #return [percentage, infection_prescribing]
+    
+def generate_infection_barchart():
+    """Generate infection treatment barchart."""
+    total_infection = db_mod.get_infection_data('05%')
+    Antibacterials_data =round((db_mod.get_infection_data('0501%')/total_infection)* 100, 2)
+    Antifungal_data = round((db_mod.get_infection_data('0502%') / total_infection) * 100, 2)
+    Antiviral_data = round((db_mod.get_infection_data('0503%') / total_infection) * 100, 2)
+    Antiprotozoal_data = round((db_mod.get_infection_data('0504%') / total_infection) * 100, 2)
+    Anthelminics_data = round((db_mod.get_infection_data('0505%') / total_infection) * 100, 2)
+    return [Antibacterials_data,Antifungal_data,Antiviral_data,Antiprotozoal_data,Anthelminics_data]
+
 
 

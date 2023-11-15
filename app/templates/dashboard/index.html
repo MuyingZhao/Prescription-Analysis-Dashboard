@@ -34,7 +34,8 @@
         // Run JavaScript functions when page ready
         $(document).ready(function () {
             initializeMain();
-            barChart.drawChart({{pct|tojson}}, "bar-chart");
+            barChart.drawChart({{pct|tojson}}, "bar-chart")
+            barChart.drawChart({{generate_infection_barchart()[0]}});
         });
   </script>
 </head>
@@ -244,6 +245,7 @@
                   <h6 class="m-0 font-weight-bold text-primary">Infection treatment drug as % of all infection treatments</h6>
                 </div>
                 <div class="card-body">
+                    <canvas id="infection-treatment-bar-chart"></canvas>
 
                 </div>
               </div>
