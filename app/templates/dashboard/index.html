@@ -6,6 +6,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="Prescription dashboard for MIE module (University of Manchester)">
   <meta name="author" content="Alan Davies">
+  <style>
+    .progress-container {
+      width: 540px;
+      background-color: #757575;
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 10px;
+    }
+
+    .progress-bar {
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      color: #fff;
+      width: 0;
+      background-color: #4caf50;
+      transition: width 0.5s ease;
+    }
+
+    .custom-h6 {
+      margin-top: 10px;
+      margin-left: 100px;
+    }
+  </style>
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
   <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
   <title>Prescribing dashboard</title>
@@ -34,8 +58,8 @@
         // Run JavaScript functions when page ready
         $(document).ready(function () {
             initializeMain();
-            barChart.drawChart({{pct|tojson}}, "bar-chart")
-            barChart.drawChart({{generate_infection_barchart()[0]}});
+            barChart.drawChart({{pct|tojson}}, "bar-chart");
+
         });
   </script>
 </head>
@@ -244,10 +268,64 @@
                 <div class="card-header py-3">
                   <h6 class="m-0 font-weight-bold text-primary">Infection treatment drug as % of all infection treatments</h6>
                 </div>
-                <div class="card-body">
-                    <canvas id="infection-treatment-bar-chart"></canvas>
 
-                </div>
+                    <!-- the first -->
+                  <div style="margin-left: 10px;margin-top: 10px">
+                      <h6 class="m-0 font-weight-bold text-primary">Antibacterials</h6>
+                      <div class="progress-container">
+                          <div class="progress-bar" id="myProgressBar1">{{ infection[0] }}%></div>
+                      </div>
+                  </div>
+
+                    <!-- the second -->
+                  <div style="margin-left: 10px;margin-top: 10px">
+                    <h6 class="m-0 font-weight-bold text-primary">Antifungal</h6>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="myProgressBar2">{{ infection[1] }}%</div>
+                    </div>
+                      </div>
+
+                    <!-- the third -->
+                  <div style="margin-left: 10px;margin-top: 10px">
+                    <h6 class="m-0 font-weight-bold text-primary">Antiviral</h6>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="myProgressBar3">{{ infection[2] }}%</div>
+                    </div>
+                   </div>
+
+                    <!-- the forth -->
+                      <div style="margin-left: 10px;margin-top: 10px">
+                    <h6 class="m-0 font-weight-bold text-primary">Antiprotozoal</h6>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="myProgressBar4">{{ infection[3] }}%</div>
+                    </div>
+                           </div>
+
+                    <!-- the fifth -->
+                          <div style="margin-left: 10px;margin-top: 10px">
+                    <h6 class="m-0 font-weight-bold text-primary">Anthelminics</h6>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="myProgressBar5">{{ infection[4] }}%</div>
+                    </div>
+                               </div>
+
+                    <script>
+                        // 使用JavaScript来更新进度条的百分比
+                        function updateProgressBar(id, percentage) {
+                            var progressBar = document.getElementById(id);
+                            progressBar.style.width = percentage + '%';
+                            progressBar.innerHTML = percentage + '%';
+                        }
+                        // 示例：更新第一个进度条到 50%
+                        updateProgressBar('myProgressBar1', {{ infection[0] }});
+                        updateProgressBar('myProgressBar2', {{ infection[1] }});
+                        updateProgressBar('myProgressBar3', {{ infection[2] }});
+                        updateProgressBar('myProgressBar4', {{ infection[3] }});
+                        updateProgressBar('myProgressBar5', {{ infection[4] }});
+
+                    </script>
+
+
               </div>
 
             </div>
