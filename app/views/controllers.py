@@ -57,7 +57,7 @@ def generate_barchart_data():
     data_values = [r[0] for r in data_values]
     pct_codes = [r[0] for r in pct_codes]
     return [data_values, pct_codes]
-    
+
 def generate_infection_barchart():
     """Generate infection treatment barchart."""
     total_infection = db_mod.get_infection_data('05%')
@@ -67,6 +67,3 @@ def generate_infection_barchart():
     Antiprotozoal_data = round((db_mod.get_infection_data('0504%') / total_infection) * 100, 2)
     Anthelminics_data = round((db_mod.get_infection_data('0505%') / total_infection) * 100, 2)
     return [Antibacterials_data,Antifungal_data,Antiviral_data,Antiprotozoal_data,Anthelminics_data]
-
-
-
