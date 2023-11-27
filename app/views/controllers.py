@@ -1,5 +1,5 @@
 """
-NAME:          views\controllers.py
+NAME:          views/controllers.py
 AUTHOR:        Alan Davies (Lecturer Health Data Science)
 EMAIL:         alan.davies-2@manchester.ac.uk
 DATE:          18/12/2019
@@ -15,6 +15,7 @@ views = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 
 # get the database class
 db_mod = Database()
+
 
 # Set the route and accepted methods
 @views.route('/home/', methods=['GET', 'POST'])
@@ -46,7 +47,9 @@ def home():
 
 def generate_data_for_tiles():
     """Generate the data for the four home page titles."""
-    return [db_mod.get_total_number_items(), db_mod.get_average_ACT_cost(), db_mod.get_TOP_PRESCRIBED_ITEM(), db_mod.get_number_of_unique_items()]
+    return [db_mod.get_total_number_items(), db_mod.get_average_ACT_cost(), db_mod.get_TOP_PRESCRIBED_ITEM(),
+            db_mod.get_number_of_unique_items()]
+
 
 def generate_barchart_data():
     """Generate the data needed to populate the barchart."""
@@ -58,12 +61,13 @@ def generate_barchart_data():
     pct_codes = [r[0] for r in pct_codes]
     return [data_values, pct_codes]
 
+
 def generate_infection_barchart():
     """Generate infection treatment barchart."""
     total_infection = db_mod.get_infection_data('05%')
-    Antibacterials_data =round((db_mod.get_infection_data('0501%')/total_infection)* 100, 2)
-    Antifungal_data = round((db_mod.get_infection_data('0502%') / total_infection) * 100, 2)
-    Antiviral_data = round((db_mod.get_infection_data('0503%') / total_infection) * 100, 2)
-    Antiprotozoal_data = round((db_mod.get_infection_data('0504%') / total_infection) * 100, 2)
-    Anthelminics_data = round((db_mod.get_infection_data('0505%') / total_infection) * 100, 2)
-    return [Antibacterials_data,Antifungal_data,Antiviral_data,Antiprotozoal_data,Anthelminics_data]
+    antibacterials_data = round((db_mod.get_infection_data('0501%') / total_infection) * 100, 2)
+    antifungal_data = round((db_mod.get_infection_data('0502%') / total_infection) * 100, 2)
+    antiviral_data = round((db_mod.get_infection_data('0503%') / total_infection) * 100, 2)
+    antiprotozoal_data = round((db_mod.get_infection_data('0504%') / total_infection) * 100, 2)
+    anthelminics_data = round((db_mod.get_infection_data('0505%') / total_infection) * 100, 2)
+    return [antibacterials_data, antifungal_data, antiviral_data, antiprotozoal_data, anthelminics_data]
