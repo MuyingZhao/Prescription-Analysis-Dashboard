@@ -219,6 +219,24 @@
             </div>
           </div>
 
+
+          <input type="text" id="searchInput" placeholder="Enter drug name or BNF code">
+          <button onclick="search()">Search</button>
+
+          <table id="drugTable">
+              <thead>
+                  <tr>
+                      <th>BNF Code</th>
+                      <th>BNF Name</th>
+                      <th>Items</th>
+                      <th>NIC</th>
+                      <th>ACT Cost</th>
+                      <th>Quantity</th>
+                  </tr>
+              </thead>
+          <!-- Table rows will be dynamically added here -->
+          </table>
+
           <!-- Content Row -->
           <div class="row">
             <div class="col-xl-12 col-lg-7">
@@ -329,7 +347,17 @@
                   <h6 class="m-0 font-weight-bold text-primary">About the prescribing dashboard</h6>
                 </div>
                 <div class="card-body">
-                  <p>?</p>
+                  <p>The dashboard amis to offer healthcare professionals a comprehensive view
+                  of prescription patterns, medication cost trends, and patient treatments.
+                  It provides insights by analyzing total prescription items, average medication costs,
+                  top prescribed items, etc. This information assists doctors in making informed
+                  decisions considering cost-effectiveness and patient needs. Additionally,
+                  specialized tools such as infection treatment drug analysis and a Creatinine clearance
+                  calculator are included to optimize medical decisions and resource allocation.<br><br>
+                  Our team is Group 14, composed of Xinyu Fan, Wenxin Zhang, Muying Zhao, Xiaoyan Ma
+                  and Huoding Zhang. In three Sprints, we rotated roles as Product Owner,Scrum Master
+                  and Development Team. Using a one-branch-per- person Git strategy, we construct the
+                  dashboard together.</p>
                   <br />
                   <hr />
                    <button type="button" class="btn btn-danger" onclick="popup.hideAboutPopup();">Close</button>
@@ -371,4 +399,34 @@
 
 </body>
 
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+    <form action="/search" method="post">
+        <input type="text" name="query" placeholder="药品名称或BNF代码">
+        <input type="submit" value="搜索">
+    </form>
+    <!-- 显示搜索结果 -->
+    {% if results %}
+    <table>
+        <tr>
+            <th>name</th>
+            <th>bnf_code</th>
+        </tr>
+        {% for drug in results %}
+        <tr>
+            <td>{{ drug.name }}</td>
+            <td>{{ drug.bnf_code }}</td>
+            <td>{{ drug.description }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</body>
 </html>

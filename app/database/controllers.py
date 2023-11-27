@@ -10,10 +10,12 @@ DESCRIPTION:   Contains the Database class that contains all the methods used fo
 from sqlalchemy.sql import func
 from flask import Blueprint
 
-from app import db
+from app import db,app
 from app.database.models import PrescribingData, PracticeData
 import sqlite3
 from sqlalchemy import literal_column
+from flask import Flask, request, jsonify
+
 
 database = Blueprint('dbutils', __name__, url_prefix='/dbutils')
 
@@ -31,6 +33,10 @@ class Database:
         ''' return the number of unique items'''
         return int(db.session.query(func.count(func.distinct(PrescribingData.BNF_code))).first()[0])
 
+
+    def get_Average_ACT_COST(self):
+        """Return the AVERAGE ACT COST"""
+        return int(db.session.query(func.ave(PrescribingData.ACT_cost).label('average_act_cost')).first()[0])
 
     def get_prescribed_items_per_pct(self):
         return db.session.query(func.sum(PrescribingData.items).label("item_sum")).group_by(PrescribingData.PCT).all()
@@ -55,3 +61,30 @@ class Database:
         max_pre = result[2]*100
         conn.close()
         return max_name, int(max_value), round(max_pre, 2)
+
+    @app.route('/search_drug')
+    def search_drug(self):
+        search_term = request.args.get('term')
+
+        # Perform drug search based on the BNF code or BNF name
+        # You can customize this query based on your specific needs
+        results = PrescribingData.query.filter(
+            (PrescribingData.BNF_code.like(f"%{search_term}%")) |
+            (PrescribingData.BNF_name.like(f"%{search_term}%"))
+        ).all()
+
+        # Convert the results to a list of dictionaries
+        drug_data = [
+            {
+                'BNF_code': result.BNF_code,
+                'BNF_name': result.BNF_name,
+                'items': result.items,
+                'NIC': result.NIC,
+                'ACT_cost': result.ACT_cost,
+                'quantity': result.quantity
+                # Add more attributes as needed
+            }
+            for result in results
+        ]
+
+        return jsonify(drug_data)
