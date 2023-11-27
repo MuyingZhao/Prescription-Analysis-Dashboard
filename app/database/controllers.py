@@ -61,3 +61,4 @@ class Database:
         max_pre = result[2]*100
         conn.close()
         return max_name, max_value, round(max_pre,2)
+

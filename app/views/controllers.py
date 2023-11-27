@@ -55,3 +55,5 @@ def generate_barchart_data():
     return [data_values, pct_codes]
 
 
+
+
