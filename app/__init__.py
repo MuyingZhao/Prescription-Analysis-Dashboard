@@ -10,6 +10,7 @@ DESCRIPTION:   Initialisation file. Creates the Flask application and SQL databa
 
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
+from flask import Blueprint
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -26,4 +27,8 @@ from app.database.controllers import database as database_module
 
 app.register_blueprint(views_module)
 app.register_blueprint(database_module)
+
+
+views = Blueprint('views',__name__)
+
 
