@@ -69,16 +69,6 @@
         // Run JavaScript functions when page ready
         $(document).ready(function () {
             initializeMain();
-            barChart.drawChart({{pct|tojson}}, "bar-chart");
-
-        });
-  </script>
-  <script type=text/javascript>
-        $SCRIPT_ROOT = {{ request.script_root | tojson | safe }};
-
-        // Run JavaScript functions when page ready
-        $(document).ready(function () {
-            initializeMain();
             barChart.drawChart({{gp|tojson}}, "PCTbarChart");
 
         });
