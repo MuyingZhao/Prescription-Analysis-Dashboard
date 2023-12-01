@@ -36,13 +36,22 @@ def home():
     bar_labels = bar_data[1]
     title_data_items = generate_data_for_tiles()
 
+    #mxy
+    bar_data1 = generate_barchart1_data()
+    bar_values1 = bar_data1[0]
+    bar_labels1 = bar_data1[1]
+
+
     infection_data = generate_infection_barchart()
+
 
     # render the HTML page passing in relevant data
     return render_template('dashboard/index.html', tile_data=title_data_items,
                            pct={'data': bar_values, 'labels': bar_labels},
                            pct_list=pcts, pct_data=selected_pct_data,
-                           infection=infection_data)
+                           gp={'data': bar_values1, 'labels': bar_labels1},
+                           infection=infection_data
+                           )
 
 
 def generate_data_for_tiles():
@@ -71,3 +80,13 @@ def generate_infection_barchart():
     antiprotozoal_data = round((db_mod.get_infection_data('0504%') / total_infection) * 100, 2)
     anthelminics_data = round((db_mod.get_infection_data('0505%') / total_infection) * 100, 2)
     return [antibacterials_data, antifungal_data, antiviral_data, antiprotozoal_data, anthelminics_data]
+
+#mxy
+def generate_barchart1_data():
+    data_values1 = db_mod.get_prescribed_items_per_GP()
+    pct_codes1 = db_mod.get_distinct_gps()
+
+    # convert into lists and return
+    data_values1 = [r[0] for r in data_values1]
+    pct_codes1 = [r[0] for r in pct_codes1]
+    return [data_values1, pct_codes1]

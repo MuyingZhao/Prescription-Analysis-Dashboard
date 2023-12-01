@@ -63,6 +63,26 @@
 
         });
   </script>
+  <script type=text/javascript>
+        $SCRIPT_ROOT = {{ request.script_root | tojson | safe }};
+
+        // Run JavaScript functions when page ready
+        $(document).ready(function () {
+            initializeMain();
+            barChart.drawChart({{pct|tojson}}, "bar-chart");
+
+        });
+  </script>
+  <script type=text/javascript>
+        $SCRIPT_ROOT = {{ request.script_root | tojson | safe }};
+
+        // Run JavaScript functions when page ready
+        $(document).ready(function () {
+            initializeMain();
+            barChart.drawChart({{gp|tojson}}, "PCTbarChart");
+
+        });
+  </script>
 </head>
 
 <body id="page-top">
@@ -280,77 +300,30 @@
             </div>
           </div>
 
-<!-- PCT bar chart-->
-          <!-- Content Row -->
+          <!-- PCT bar chart-->
+              <!-- Content Row -->
           <div class="row">
-            <div class="col-xl-10 col-lg-4">
+            <div class="col-xl-12 col-lg-7">
               <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">Prescribed items per Primary Care Trust (PCT)</h6>
                 </div>
                 <div class="card-body">
+                  <form method='POST' action="{{ url_for('dashboard.home') }}">
+                      <select class="custom-select" id="input-group-select1" name="pct-option">
+                        {% for item in pct_list %}
+                        <option name="option-list" value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                      </select>
+                      <input type="submit" value="Update" class="btn btn-outline-secondary" />
+                    </form>
+                    <hr />
                   <canvas id="PCTbarChart"></canvas>
                 </div>
               </div>
             </div>
-      <label for="pctFilter">Select PCT:</label>
-    <select id="pctFilter" onchange="updateChartData()">
-        <option value="pct1">PCT 1</option>
-        <option value="pct2">PCT 2</option>
-        <!-- 添加其他 PCT 选项 -->
-    </select>
 
-    <script>
-        // 示例：初始化图表数据
-        var initialChartData = {
-            labels: ['GP 1', 'GP 2', 'GP 3', 'GP 4', 'GP 5'],
-            data: [30, 40, 25, 35, 45]  // 初始注册人数数据
-        };
-
-        // 示例：获取 canvas 元素
-        var ctx = document.getElementById('PCTbarChart').getContext('2d');
-
-        // 示例：创建初始条形图
-        var PCTbarChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: initialChartData.labels,
-                datasets: [{
-                    label: 'Registration Numbers',
-                    data: initialChartData.data,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // 示例：根据选择的 PCT 更新图表数据
-        function updateChartData() {
-            var selectedPct = document.getElementById('pctFilter').value;
-            // 在这里根据选择的 PCT 获取相应的数据
-            // 更新图表数据
-            var newData = {
-                labels: ['GP 1', 'GP 2', 'GP 3', 'GP 4', 'GP 5'],  // 更新的注册人数数据
-                data: [25, 30, 20, 40, 35]
-            };
-            registrationChart.data.labels = newData.labels;
-    registrationChart.data.datasets[0].data = newData.data;
-
-    // 调用 update 方法以应用更改
-    registrationChart.update();
-        }
-    </script>
-
-
-          <!-- Content Row -->
+              <!-- Content Row -->
           <div class="row">
             <div class="col-xl-12 col-lg-7">
               <div class="card shadow mb-4">
