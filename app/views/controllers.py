@@ -36,7 +36,7 @@ def home():
     bar_labels = bar_data[1]
     title_data_items = generate_data_for_tiles()
 
-    #mxy
+    #mxy bar
     bar_data1 = generate_barchart1_data()
     bar_values1 = bar_data1[0]
     bar_labels1 = bar_data1[1]

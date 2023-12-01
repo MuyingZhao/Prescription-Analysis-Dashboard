@@ -45,14 +45,13 @@ class Database:
         return db.session.query(PrescribingData.PCT).distinct().all()
     #mxy
     def get_distinct_gps(self):
-        """Return the distinct PCT codes."""
+        """Return the distinct gp codes."""
         return db.session.query(PrescribingData.practice).distinct().all()
 
     #mxy
     def get_n_data_for_PCT(self, pct, n):
         """Return all the data for a given PCT."""
         return db.session.query(PrescribingData).filter(PrescribingData.PCT == pct).limit(n).all()
-
 
     def get_TOP_PRESCRIBED_ITEM(self):
         name = db.session.query(PrescribingData.BNF_name).order_by(PrescribingData.quantity.desc()).first()[0]
