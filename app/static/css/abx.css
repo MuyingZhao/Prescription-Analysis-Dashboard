@@ -52,3 +52,25 @@
     width:100%;
     padding-left:12px;
 }
+
+
+table,tbody {
+    display: block;
+    height: 300px;
+}
+
+tbody {
+    height: 80%;
+    overflow-y: scroll;
+}
+
+table thead,
+tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.card {
+  display: block;
+}

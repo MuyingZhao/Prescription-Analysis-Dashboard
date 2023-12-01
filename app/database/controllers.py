@@ -7,7 +7,7 @@ INSTITUTION:   University of Manchester (FBMH)
 DESCRIPTION:   Contains the Database class that contains all the methods used for accessing the database
 """
 
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func,desc,or_
 from flask import Blueprint
 
 from app import db,app
@@ -62,29 +62,5 @@ class Database:
         conn.close()
         return max_name, int(max_value), round(max_pre, 2)
 
-    @app.route('/search_drug')
-    def search_drug(self):
-        search_term = request.args.get('term')
-
-        # Perform drug search based on the BNF code or BNF name
-        # You can customize this query based on your specific needs
-        results = PrescribingData.query.filter(
-            (PrescribingData.BNF_code.like(f"%{search_term}%")) |
-            (PrescribingData.BNF_name.like(f"%{search_term}%"))
-        ).all()
-
-        # Convert the results to a list of dictionaries
-        drug_data = [
-            {
-                'BNF_code': result.BNF_code,
-                'BNF_name': result.BNF_name,
-                'items': result.items,
-                'NIC': result.NIC,
-                'ACT_cost': result.ACT_cost,
-                'quantity': result.quantity
-                # Add more attributes as needed
-            }
-            for result in results
-        ]
-
-        return jsonify(drug_data)
+    def get_searchterm_drug(self, search_term):
+        return db.session.query(PrescribingData).filter(or_(PrescribingData.BNF_name.like(f"%{search_term}%"), PrescribingData.BNF_code.like(f"%{search_term}%"))).order_by(desc(PrescribingData.items)).all()

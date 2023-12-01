@@ -8,7 +8,7 @@ DESCRIPTION:   Views module. Renders HTML pages and passes in associated data to
                dashboard.
 """
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify
 from app.database.controllers import Database
 
 views = Blueprint('dashboard', __name__, url_prefix='/dashboard')
@@ -29,6 +29,15 @@ def home():
         # pick a default PCT to show
         selected_pct_data = db_mod.get_n_data_for_PCT(str(pcts[0]), 5)
 
+    if request.method == 'GET':
+        search_term = request.args.get('searchTerm','Aciclovir')
+    else:
+        search_term = 'Aciclovir'
+
+    # 在这里实现你的模糊搜索逻辑，获取匹配的数据
+    updated_data = db_mod.get_searchterm_drug(search_term)
+
+
     # prepare data
     bar_data = generate_barchart_data()
     bar_values = bar_data[0]
@@ -38,7 +47,9 @@ def home():
     # render the HTML page passing in relevant data
     return render_template('dashboard/index.html', tile_data=title_data_items,
                            pct={'data': bar_values, 'labels': bar_labels},
-                           pct_list=pcts, pct_data=selected_pct_data)
+                           pct_list=pcts, pct_data=selected_pct_data, table_data=updated_data)
+
+
 
 def generate_data_for_tiles():
     """Generate the data for the four home page titles."""

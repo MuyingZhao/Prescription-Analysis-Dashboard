@@ -26,6 +26,7 @@
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   <script src="{{ url_for('static', filename='js/barchart.js') }}"></script>
   <script src="{{ url_for('static', filename='js/popup.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/search.js') }}"></script>
 
   <!-- Page script -->
   <script type=text/javascript>
@@ -220,25 +221,54 @@
           </div>
 
 
-          <input type="text" id="searchInput" placeholder="Enter drug name or BNF code">
-          <button onclick="search()">Search</button>
+            <div class="row">
+                <div class="col-xl-12 col-lg-7">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Search drug data by BNF Name or BNF Code</h6>
+                        </div>
+                        <div class="card-body">
+                            <form method='GET' action="{{ url_for('dashboard.home') }}" name="drugForm">
+                                <div class="d-flex justify-content-between">
+                                    <div class="col-md-6 mb-2">
+                                        <input type="text" class="form-control" id="searchTerm" name="searchTerm" placeholder="Please enter drug name or drug code here...">
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <button type="submit" class="btn btn-primary w-100" id="update-btn">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Practice</th>
+                                        <th>BNF code</th>
+                                        <th>BNF name</th>
+                                        <th>Items</th>
+                                        <th>ACT Cost</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in table_data %}
+                                        <tr>
+                                            <td>{{ row.practice }}</td>
+                                            <td>{{ row.BNF_code }}</td>
+                                            <td>{{ row.BNF_name }}</td>
+                                            <td>{{ row.items }}</td>
+                                            <td>{{ row.ACT_cost }}</td>
+                                            <td>{{ row.quantity }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-          <table id="drugTable">
-              <thead>
-                  <tr>
-                      <th>BNF Code</th>
-                      <th>BNF Name</th>
-                      <th>Items</th>
-                      <th>NIC</th>
-                      <th>ACT Cost</th>
-                      <th>Quantity</th>
-                  </tr>
-              </thead>
-          <!-- Table rows will be dynamically added here -->
-          </table>
+
 
           <!-- Content Row -->
-          <div class="row">
             <div class="col-xl-12 col-lg-7">
               <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">

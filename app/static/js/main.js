@@ -9,12 +9,11 @@
 
 var popup = null;
 var barChart = null;
-var search = require('./search'); // Adjust the path based on your file structure
+// Adjust the path based on your file structure
 
 // initialisation function
 function initializeMain()
 {
     popup = Popup();
     barChart = BarChart();
-    search();
 }

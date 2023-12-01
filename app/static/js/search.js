@@ -7,44 +7,21 @@
     DESCRIPTION:   JavaScript file for initializing the JavaScript functionality.
 */
 
-function Search() {
+$(document).ready(function () {
+    $('#searchTerm').on('input', function () {
+        var searchTerm = $(this).val();
 
-    var searchTerm = document.getElementById('searchInput').value;
-
-    // Make an AJAX request to the backend with the search term
-    // Update the table with the search results
-    // Example using Fetch API
-    fetch('/search_drug?term=' + searchTerm)
-        .then(response => response.json())
-        .then(data => updateTable(data));
-}
-
-function UpdateTable(data) {
-    var table = document.getElementById('drugTable');
-    var tbody = table.getElementsByTagName('tbody')[0];
-
-    // Clear existing rows
-    tbody.innerHTML = '';
-
-    // Add new rows based on the search results
-    data.forEach(drug => {
-        var row = tbody.insertRow();
-        var bnfCodeCell = row.insertCell(0);
-        var bnfNameCell = row.insertCell(1);
-        var itemsCell = row.insertCell(2);
-        var nicCell = row.insertCell(3);
-        var actCostCell = row.insertCell(4);
-        var quantityCell = row.insertCell(5);
-
-        bnfCodeCell.innerHTML = drug.BNF_code;
-        bnfNameCell.innerHTML = drug.BNF_name;
-        itemsCell.innerHTML = drug.items;
-        nicCell.innerHTML = drug.NIC;
-        actCostCell.innerHTML = drug.ACT_cost;
-        quantityCell.innerHTML = drug.quantity;
-
-        // Add more cells as needed based on your data model
+        // 发送AJAX请求，获取更新后的表格HTML
+        $.ajax({
+            type: 'GET',
+            url: '/update-table',
+            data: { searchTerm: searchTerm },
+            success: function (tableHTML) {
+                // 将更新后的表格HTML插入到页面中
+                $('#table-container').html(tableHTML);
+            }
+        });
     });
-}
+});
 
-module.exports = search;
+
