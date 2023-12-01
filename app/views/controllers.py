@@ -1,5 +1,5 @@
 """
-NAME:          views/controllers.py
+NAME:          views\controllers.py
 AUTHOR:        Alan Davies (Lecturer Health Data Science)
 EMAIL:         alan.davies-2@manchester.ac.uk
 DATE:          18/12/2019
@@ -8,14 +8,13 @@ DESCRIPTION:   Views module. Renders HTML pages and passes in associated data to
                dashboard.
 """
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify
 from app.database.controllers import Database
 
 views = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 
 # get the database class
 db_mod = Database()
-
 
 # Set the route and accepted methods
 @views.route('/home/', methods=['GET', 'POST'])
@@ -30,6 +29,15 @@ def home():
         # pick a default PCT to show
         selected_pct_data = db_mod.get_n_data_for_PCT(str(pcts[0]), 5)
 
+    if request.method == 'GET':
+        search_term = request.args.get('searchTerm','Aciclovir')
+    else:
+        search_term = 'Aciclovir'
+
+    # 在这里实现你的模糊搜索逻辑，获取匹配的数据
+    updated_data = db_mod.get_searchterm_drug(search_term)
+
+
     # prepare data
     bar_data = generate_barchart_data()
     bar_values = bar_data[0]
@@ -41,15 +49,14 @@ def home():
     # render the HTML page passing in relevant data
     return render_template('dashboard/index.html', tile_data=title_data_items,
                            pct={'data': bar_values, 'labels': bar_labels},
-                           pct_list=pcts, pct_data=selected_pct_data,
+                           pct_list=pcts, pct_data=selected_pct_data, table_data=updated_data,
                            infection=infection_data)
+
 
 
 def generate_data_for_tiles():
     """Generate the data for the four home page titles."""
-    return [db_mod.get_total_number_items(), db_mod.get_average_ACT_cost(), db_mod.get_TOP_PRESCRIBED_ITEM(),
-            db_mod.get_number_of_unique_items()]
-
+    return [db_mod.get_total_number_items(), db_mod.get_average_ACT_cost(), db_mod.get_TOP_PRESCRIBED_ITEM(), db_mod.get_number_of_unique_items()]
 
 def generate_barchart_data():
     """Generate the data needed to populate the barchart."""
@@ -61,7 +68,6 @@ def generate_barchart_data():
     pct_codes = [r[0] for r in pct_codes]
     return [data_values, pct_codes]
 
-
 def generate_infection_barchart():
     """Generate infection treatment barchart."""
     total_infection = db_mod.get_infection_data('05%')
@@ -71,3 +77,5 @@ def generate_infection_barchart():
     antiprotozoal_data = round((db_mod.get_infection_data('0504%') / total_infection) * 100, 2)
     anthelminics_data = round((db_mod.get_infection_data('0505%') / total_infection) * 100, 2)
     return [antibacterials_data, antifungal_data, antiviral_data, antiprotozoal_data, anthelminics_data]
+
+
