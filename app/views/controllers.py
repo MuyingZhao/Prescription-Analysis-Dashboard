@@ -52,8 +52,6 @@ def home():
                            pct_list=pcts, pct_data=selected_pct_data, table_data=updated_data,
                            infection=infection_data)
 
-
-
 def generate_data_for_tiles():
     """Generate the data for the four home page titles."""
     return [db_mod.get_total_number_items(), db_mod.get_average_ACT_cost(), db_mod.get_TOP_PRESCRIBED_ITEM(), db_mod.get_number_of_unique_items()]
