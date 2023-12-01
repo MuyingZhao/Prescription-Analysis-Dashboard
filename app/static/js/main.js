@@ -9,6 +9,7 @@
 
 var popup = null;
 var barChart = null;
+// Adjust the path based on your file structure
 
 // initialisation function
 function initializeMain()

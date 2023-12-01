@@ -50,6 +50,7 @@
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   <script src="{{ url_for('static', filename='js/barchart.js') }}"></script>
   <script src="{{ url_for('static', filename='js/popup.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/search.js') }}"></script>
 
   <!-- Page script -->
   <script type=text/javascript>
@@ -244,8 +245,55 @@
             </div>
           </div>
 
+
+            <div class="row">
+                <div class="col-xl-12 col-lg-7">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Search drug data by BNF Name or BNF Code</h6>
+                        </div>
+                        <div class="card-body">
+                            <form method='GET' action="{{ url_for('dashboard.home') }}" name="drugForm">
+                                <div class="d-flex justify-content-between">
+                                    <div class="col-md-6 mb-2">
+                                        <input type="text" class="form-control" id="searchTerm" name="searchTerm" placeholder="Please enter drug name or drug code here...">
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <button type="submit" class="btn btn-primary w-100" id="update-btn">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Practice</th>
+                                        <th>BNF code</th>
+                                        <th>BNF name</th>
+                                        <th>Items</th>
+                                        <th>ACT Cost</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in table_data %}
+                                        <tr>
+                                            <td>{{ row.practice }}</td>
+                                            <td>{{ row.BNF_code }}</td>
+                                            <td>{{ row.BNF_name }}</td>
+                                            <td>{{ row.items }}</td>
+                                            <td>{{ row.ACT_cost }}</td>
+                                            <td>{{ row.quantity }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+
           <!-- Content Row -->
-          <div class="row">
             <div class="col-xl-12 col-lg-7">
               <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -462,4 +510,34 @@
 
 </body>
 
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+    <form action="/search" method="post">
+        <input type="text" name="query" placeholder="药品名称或BNF代码">
+        <input type="submit" value="搜索">
+    </form>
+    <!-- 显示搜索结果 -->
+    {% if results %}
+    <table>
+        <tr>
+            <th>name</th>
+            <th>bnf_code</th>
+        </tr>
+        {% for drug in results %}
+        <tr>
+            <td>{{ drug.name }}</td>
+            <td>{{ drug.bnf_code }}</td>
+            <td>{{ drug.description }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</body>
 </html>

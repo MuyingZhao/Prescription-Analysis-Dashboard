@@ -9,6 +9,7 @@ DESCRIPTION:   Database ORM class
 
 from app import db
 
+
 class PrescribingData(db.Model):
     """class for the prescription data table."""
     __tablename__ = 'practice_level_prescribing'
@@ -34,5 +35,12 @@ class PracticeData(db.Model):
     county = db.Column(db.Text)
     post_code = db.Column(db.String(10))
 
+
+'''
+def search_drugs(query):
+    db = get_db()
+    results = db.session.query(PrescribingData).filter(PrescribingData.BNF_name.like('f%{query}%')|PrescribingData.BNF_code.like('f%{query}%')).all()
+    return results
+'''
 
 
