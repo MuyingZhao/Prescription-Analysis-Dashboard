@@ -43,9 +43,13 @@ function Popup()
         document.querySelector('input[name="patients-age"]').value = '';
         document.querySelector('input[name="patients-weight"]').value = '';
         document.querySelector('input[name="patients-serum"]').value = '';
-
+        var resultDiv = document.getElementById('result');
+        if (resultDiv) {
+            resultDiv.textContent = '';
+        }
         this.hideMask();
         this.entryFormPopup.style.display = "none";
+
     }
 
     // show the about popup

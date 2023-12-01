@@ -41,10 +41,19 @@ class Database:
     def get_prescribed_items_per_pct(self):
         return db.session.query(func.sum(PrescribingData.items).label("item_sum")).group_by(PrescribingData.PCT).all()
 
+    #mxy
+    def get_prescribed_items_per_GP(self):
+        return db.session.query(func.sum(PrescribingData.items).label("item1")).group_by(PrescribingData.practice).all()
+
     def get_distinct_pcts(self):
         """Return the distinct PCT codes."""
         return db.session.query(PrescribingData.PCT).distinct().all()
+    #mxy
+    def get_distinct_gps(self):
+        """Return the distinct PCT codes."""
+        return db.session.query(PrescribingData.practice).distinct().all()
 
+    #mxy
     def get_n_data_for_PCT(self, pct, n):
         """Return all the data for a given PCT."""
         return db.session.query(PrescribingData).filter(PrescribingData.PCT == pct).limit(n).all()
