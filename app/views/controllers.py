@@ -44,10 +44,13 @@ def home():
     bar_labels = bar_data[1]
     title_data_items = generate_data_for_tiles()
 
+    infection_data = generate_infection_barchart()
+
     # render the HTML page passing in relevant data
     return render_template('dashboard/index.html', tile_data=title_data_items,
                            pct={'data': bar_values, 'labels': bar_labels},
-                           pct_list=pcts, pct_data=selected_pct_data, table_data=updated_data)
+                           pct_list=pcts, pct_data=selected_pct_data, table_data=updated_data,
+                           infection=infection_data)
 
 
 
@@ -64,5 +67,15 @@ def generate_barchart_data():
     data_values = [r[0] for r in data_values]
     pct_codes = [r[0] for r in pct_codes]
     return [data_values, pct_codes]
+
+def generate_infection_barchart():
+    """Generate infection treatment barchart."""
+    total_infection = db_mod.get_infection_data('05%')
+    antibacterials_data = round((db_mod.get_infection_data('0501%') / total_infection) * 100, 2)
+    antifungal_data = round((db_mod.get_infection_data('0502%') / total_infection) * 100, 2)
+    antiviral_data = round((db_mod.get_infection_data('0503%') / total_infection) * 100, 2)
+    antiprotozoal_data = round((db_mod.get_infection_data('0504%') / total_infection) * 100, 2)
+    anthelminics_data = round((db_mod.get_infection_data('0505%') / total_infection) * 100, 2)
+    return [antibacterials_data, antifungal_data, antiviral_data, antiprotozoal_data, anthelminics_data]
 
 

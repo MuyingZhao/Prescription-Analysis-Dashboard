@@ -49,18 +49,17 @@ class Database:
         """Return all the data for a given PCT."""
         return db.session.query(PrescribingData).filter(PrescribingData.PCT == pct).limit(n).all()
 
-
     def get_TOP_PRESCRIBED_ITEM(self):
-        conn = sqlite3.connect('abxdb.db')
-        cursor = conn.cursor()
-        query = "select BNFNAME, MAX(quantity), MAX(quantity)/sum(quantity) from practice_level_prescribing"
-        cursor.execute(query)
-        result = cursor.fetchone()
-        max_name = result[0]
-        max_value = result[1]
-        max_pre = result[2]*100
-        conn.close()
-        return max_name, int(max_value), round(max_pre, 2)
+        name = db.session.query(PrescribingData.BNF_name).order_by(PrescribingData.quantity.desc()).first()[0]
+        number = db.session.query(func.max(PrescribingData.quantity)).first()[0]
+        top = round(db.session.query(
+            ((func.max(PrescribingData.quantity) / func.sum(PrescribingData.quantity)) * 100).label('to-pre')).first()[
+                        0], 2)
+        return f"{name} ({number}) {top}"
 
     def get_searchterm_drug(self, search_term):
         return db.session.query(PrescribingData).filter(or_(PrescribingData.BNF_name.like(f"%{search_term}%"), PrescribingData.BNF_code.like(f"%{search_term}%"))).order_by(desc(PrescribingData.items)).all()
+
+    def get_infection_data(self, code):
+        """Return the total numbers of five infection treatment."""
+        return db.session.query(func.sum(PrescribingData.items).label('infection_sum')).filter(PrescribingData.BNF_code.like(code)).first()[0]
