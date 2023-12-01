@@ -50,6 +50,7 @@
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   <script src="{{ url_for('static', filename='js/barchart.js') }}"></script>
   <script src="{{ url_for('static', filename='js/popup.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/search.js') }}"></script>
 
   <!-- Page script -->
   <script type=text/javascript>
@@ -245,7 +246,6 @@
           </div>
 
           <!-- Content Row -->
-          <div class="row">
             <div class="col-xl-12 col-lg-7">
               <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -462,4 +462,34 @@
 
 </body>
 
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+    <form action="/search" method="post">
+        <input type="text" name="query" placeholder="药品名称或BNF代码">
+        <input type="submit" value="搜索">
+    </form>
+    <!-- 显示搜索结果 -->
+    {% if results %}
+    <table>
+        <tr>
+            <th>name</th>
+            <th>bnf_code</th>
+        </tr>
+        {% for drug in results %}
+        <tr>
+            <td>{{ drug.name }}</td>
+            <td>{{ drug.bnf_code }}</td>
+            <td>{{ drug.description }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</body>
 </html>
