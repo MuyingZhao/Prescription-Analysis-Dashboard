@@ -30,28 +30,34 @@ def home():
         # pick a default PCT to show
         selected_pct_data = db_mod.get_n_data_for_PCT(str(pcts[0]), 5)
 
+    if request.method == 'POST':
+        # if selecting PCT for table, update based on user choice
+        form = request.form
+        data_values1 = db_mod.get_prescribed_items_per_GP(str(form['pct-option']))
+        pct_codes1 = db_mod.get_distinct_gps(str(form['pct-option']))
+        json_serializable_data_values1 = [row[0] for row in data_values1]
+        json_serializable_pct_codes1 = [row[0] for row in pct_codes1]
+    else:
+        # pick a default PCT to show
+        data_values1 = db_mod.get_prescribed_items_per_GP(str(pcts[0]))
+        pct_codes1 = db_mod.get_distinct_gps(str(pcts[0]))
+        json_serializable_data_values1 = [row[0] for row in data_values1]
+        json_serializable_pct_codes1 = [row[0] for row in pct_codes1]
+
     # prepare data
     bar_data = generate_barchart_data()
     bar_values = bar_data[0]
     bar_labels = bar_data[1]
     title_data_items = generate_data_for_tiles()
-
-    #mxy bar
-    bar_data1 = generate_barchart1_data()
-    bar_values1 = bar_data1[0]
-    bar_labels1 = bar_data1[1]
-
-
     infection_data = generate_infection_barchart()
 
 
     # render the HTML page passing in relevant data
     return render_template('dashboard/index.html', tile_data=title_data_items,
                            pct={'data': bar_values, 'labels': bar_labels},
-                           pct_list=pcts, pct_data=selected_pct_data,
-                           gp={'data': bar_values1, 'labels': bar_labels1},
-                           infection=infection_data
-                           )
+                           pct_list=pcts, pct_data=selected_pct_data,gp={'data': json_serializable_data_values1, 'labels': json_serializable_pct_codes1},
+                           infection=infection_data)
+
 
 
 def generate_data_for_tiles():
@@ -81,12 +87,3 @@ def generate_infection_barchart():
     anthelminics_data = round((db_mod.get_infection_data('0505%') / total_infection) * 100, 2)
     return [antibacterials_data, antifungal_data, antiviral_data, antiprotozoal_data, anthelminics_data]
 
-#mxy
-def generate_barchart1_data():
-    data_values1 = db_mod.get_prescribed_items_per_GP()
-    pct_codes1 = db_mod.get_distinct_gps()
-
-    # convert into lists and return
-    data_values1 = [r[0] for r in data_values1]
-    pct_codes1 = [r[0] for r in pct_codes1]
-    return [data_values1, pct_codes1]

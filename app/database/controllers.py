@@ -8,6 +8,7 @@ DESCRIPTION:   Contains the Database class that contains all the methods used fo
 """
 
 from sqlalchemy.sql import func
+from sqlalchemy import and_
 from flask import Blueprint
 
 from app import db
@@ -37,21 +38,27 @@ class Database:
         return db.session.query(func.sum(PrescribingData.items).label("item_sum")).group_by(PrescribingData.PCT).all()
 
     #mxy
-    def get_prescribed_items_per_GP(self):
-        return db.session.query(func.sum(PrescribingData.items).label("item1")).group_by(PrescribingData.practice).all()
+    def get_prescribed_items_per_GP(self, n):
+        return db.session.query(func.sum(PrescribingData.items).label("item1")).filter(and_(PrescribingData.PCT == n,PrescribingData.BNF_code.like('05%'))).group_by(PrescribingData.practice).all()
 
     def get_distinct_pcts(self):
         """Return the distinct PCT codes."""
         return db.session.query(PrescribingData.PCT).distinct().all()
     #mxy
-    def get_distinct_gps(self):
+    def get_distinct_gps(self, n):
         """Return the distinct gp codes."""
-        return db.session.query(PrescribingData.practice).distinct().all()
+        return db.session.query(PrescribingData.practice).distinct().filter(PrescribingData.PCT == n).all()
 
     #mxy
     def get_n_data_for_PCT(self, pct, n):
         """Return all the data for a given PCT."""
         return db.session.query(PrescribingData).filter(PrescribingData.PCT == pct).limit(n).all()
+
+    '''
+        def get_n_data_for_PCT(self, pct):
+        """Return all the data for a given PCT."""
+        return db.session.query(PrescribingData).filter(PrescribingData.PCT == pct).all()
+    '''
 
     def get_TOP_PRESCRIBED_ITEM(self):
         name = db.session.query(PrescribingData.BNF_name).order_by(PrescribingData.quantity.desc()).first()[0]
