@@ -30,6 +30,11 @@ def home():
         # pick a default PCT to show
         selected_pct_data = db_mod.get_n_data_for_PCT(str(pcts[0]), 5)
 
+    if request.method == 'GET':
+        search_term = request.args.get('searchTerm', 'Aciclovir')
+    else:
+        search_term = 'Aciclovir'
+
     if request.method == 'POST':
         # if selecting PCT for table, update based on user choice
         form = request.form
@@ -43,11 +48,6 @@ def home():
         pct_codes1 = db_mod.get_distinct_gps(str(pcts[0]))
         json_serializable_data_values1 = [row[0] for row in data_values1]
         json_serializable_pct_codes1 = [row[0] for row in pct_codes1]
-
-    if request.method == 'GET':
-        search_term = request.args.get('searchTerm', 'Aciclovir')
-    else:
-        search_term = 'Aciclovir'
 
     updated_data = db_mod.get_searchterm_drug(search_term)
     # prepare data

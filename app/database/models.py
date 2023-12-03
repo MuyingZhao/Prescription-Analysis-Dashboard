@@ -36,11 +36,5 @@ class PracticeData(db.Model):
     post_code = db.Column(db.String(10))
 
 
-'''
-def search_drugs(query):
-    db = get_db()
-    results = db.session.query(PrescribingData).filter(PrescribingData.BNF_name.like('f%{query}%')|PrescribingData.BNF_code.like('f%{query}%')).all()
-    return results
-'''
 
 
