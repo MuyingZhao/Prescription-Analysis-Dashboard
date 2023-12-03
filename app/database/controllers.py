@@ -50,7 +50,7 @@ class Database:
         return db.session.query(PrescribingData.PCT).distinct().all()
     #mxy
     def get_distinct_gps(self):
-        """Return the distinct PCT codes."""
+        """Return the distinct gp codes."""
         return db.session.query(PrescribingData.practice).distinct().all()
 
     #mxy
