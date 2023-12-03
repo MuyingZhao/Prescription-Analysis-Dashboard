@@ -26,23 +26,30 @@ def home():
         # if selecting PCT for table, update based on user choice
         form = request.form
         selected_pct_data = db_mod.get_n_data_for_PCT(str(form['pct-option']), 5)
-    else:
-        # pick a default PCT to show
-        selected_pct_data = db_mod.get_n_data_for_PCT(str(pcts[0]), 5)
-
-    if request.method == 'POST':
-        # if selecting PCT for table, update based on user choice
-        form = request.form
         data_values1 = db_mod.get_prescribed_items_per_GP(str(form['pct-option']))
         pct_codes1 = db_mod.get_distinct_gps(str(form['pct-option']))
         json_serializable_data_values1 = [row[0] for row in data_values1]
         json_serializable_pct_codes1 = [row[0] for row in pct_codes1]
     else:
         # pick a default PCT to show
+        selected_pct_data = db_mod.get_n_data_for_PCT(str(pcts[0]), 5)
         data_values1 = db_mod.get_prescribed_items_per_GP(str(pcts[0]))
         pct_codes1 = db_mod.get_distinct_gps(str(pcts[0]))
         json_serializable_data_values1 = [row[0] for row in data_values1]
         json_serializable_pct_codes1 = [row[0] for row in pct_codes1]
+    '''
+        if request.method == 'POST':
+        form = request.form
+        data_values1 = db_mod.get_prescribed_items_per_GP(str(form['pct-option']))
+        pct_codes1 = db_mod.get_distinct_gps(str(form['pct-option']))
+        json_serializable_data_values1 = [row[0] for row in data_values1]
+        json_serializable_pct_codes1 = [row[0] for row in pct_codes1]
+    else:
+        data_values1 = db_mod.get_prescribed_items_per_GP(str(pcts[0]))
+        pct_codes1 = db_mod.get_distinct_gps(str(pcts[0]))
+        json_serializable_data_values1 = [row[0] for row in data_values1]
+        json_serializable_pct_codes1 = [row[0] for row in pct_codes1]
+    '''
 
     # prepare data
     bar_data = generate_barchart_data()
@@ -55,10 +62,8 @@ def home():
     # render the HTML page passing in relevant data
     return render_template('dashboard/index.html', tile_data=title_data_items,
                            pct={'data': bar_values, 'labels': bar_labels},
-                           pct_list=pcts, pct_data=selected_pct_data,gp={'data': json_serializable_data_values1, 'labels': json_serializable_pct_codes1},
+                           pct_list=pcts, pct_data=selected_pct_data, gp={'data': json_serializable_data_values1, 'labels': json_serializable_pct_codes1},
                            infection=infection_data)
-
-
 
 def generate_data_for_tiles():
     """Generate the data for the four home page titles."""

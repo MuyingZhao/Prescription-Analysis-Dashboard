@@ -44,7 +44,7 @@ function BarChart()
                   display: false,
                   drawBorder: false
                 },
-                maxBarThickness: 25,
+                maxBarThickness: 15,
               }],
               yAxes: [{
                 ticks: {
