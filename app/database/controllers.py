@@ -14,7 +14,6 @@ from flask import Blueprint
 from app import db,app
 from app.database.models import PrescribingData, PracticeData
 import sqlite3
-from sqlalchemy import cast, String
 from sqlalchemy import literal_column
 from flask import Flask, request, jsonify
 
@@ -60,11 +59,6 @@ class Database:
         """Return all the data for a given PCT."""
         return db.session.query(PrescribingData).filter(PrescribingData.PCT == pct).limit(n).all()
 
-    '''
-        def get_n_data_for_PCT(self, pct):
-        """Return all the data for a given PCT."""
-        return db.session.query(PrescribingData).filter(PrescribingData.PCT == pct).all()
-    '''
 
     def get_TOP_PRESCRIBED_ITEM(self):
         name = db.session.query(PrescribingData.BNF_name).order_by(PrescribingData.quantity.desc()).first()[0]
