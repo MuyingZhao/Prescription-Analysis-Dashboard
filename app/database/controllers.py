@@ -14,6 +14,7 @@ from flask import Blueprint
 from app import db,app
 from app.database.models import PrescribingData, PracticeData
 import sqlite3
+from sqlalchemy import cast, String
 from sqlalchemy import literal_column
 from flask import Flask, request, jsonify
 
@@ -67,6 +68,7 @@ class Database:
             ((func.max(PrescribingData.quantity) / func.sum(PrescribingData.quantity)) * 100).label('to-pre')).first()[
                         0], 2)
         return f"{name} ({number}) {top}"
+
 
     def get_searchterm_drug(self, search_term):
         return db.session.query(PrescribingData).filter(or_(PrescribingData.BNF_name.like(f"%{search_term}%"), PrescribingData.BNF_code.like(f"%{search_term}%"))).order_by(desc(PrescribingData.items)).all()

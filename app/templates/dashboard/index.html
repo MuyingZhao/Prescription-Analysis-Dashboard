@@ -337,6 +337,30 @@
                     </div>
                 </div>
 
+          <!-- PCT bar chart-->
+              <!-- Content Row -->
+          <div class="row">
+            <div class="col-xl-12 col-lg-7">
+              <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Prescribed items per Primary Care Trust (PCT)</h6>
+                </div>
+                <div class="card-body">
+                  <!--
+                  <form method='POST' action="{{ url_for('dashboard.home') }}">
+                      <select class="custom-select" id="input-group-select1" name="pct-option1">
+                        {% for item in pct_list %}
+                        <option name="option-list" value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                      </select>
+                      <input type="submit" value="Update" class="btn btn-outline-secondary" />
+                    </form>
+                    <hr />
+                   -->
+                  <canvas id="PCTbarChart"></canvas>
+                </div>
+              </div>
+            </div>
 
 
           <!-- Content Row -->
@@ -397,7 +421,7 @@
                            </div>
 
                     <!-- the fifth -->
-                          <div style="margin-left: 10px;margin-top: 10px">
+                       <div style="margin-left: 10px;margin-top: 10px">
                     <h6 class="m-0 font-weight-bold text-primary">Anthelminics</h6>
                     <div class="progress-container">
                         <div class="progress-bar" id="myProgressBar5">{{ infection[4] }}%</div>
