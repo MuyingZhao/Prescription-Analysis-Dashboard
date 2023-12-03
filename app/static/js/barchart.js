@@ -28,7 +28,7 @@ function BarChart()
             }],
           },
           options: {
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             layout: {
               padding: {
                 left: 10,

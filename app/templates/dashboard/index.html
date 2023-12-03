@@ -343,10 +343,10 @@
             <div class="col-xl-12 col-lg-7">
               <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Prescribed items per Primary Care Trust (PCT)</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Prescribed items of GPs per Primary Care Trust (PCT)</h6>
                 </div>
                 <div class="card-body">
-                  <!--
+
                   <form method='POST' action="{{ url_for('dashboard.home') }}">
                       <select class="custom-select" id="input-group-select1" name="pct-option1">
                         {% for item in pct_list %}
@@ -356,8 +356,8 @@
                       <input type="submit" value="Update" class="btn btn-outline-secondary" />
                     </form>
                     <hr />
-                   -->
-                  <canvas id="PCTbarChart"></canvas>
+
+                  <canvas id="PCTbarChart" height="300"></canvas>
                 </div>
               </div>
             </div>
