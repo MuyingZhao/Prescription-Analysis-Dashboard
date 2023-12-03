@@ -47,5 +47,10 @@ class DatabaseTests(unittest.TestCase):
             self.assertEquals(self.db_mod.get_TOP_PRESCRIBED_ITEM(), 'Methadone HCl_Oral Soln 1mg/1ml S/F (869879) 0.14',
                               'Test top prescribed item return correct value')
 
+    # def test_get_searchterm_drug(self):
+    #     with app.app_context():
+    #         self.assertEquals()
+
+
 if __name__ == "__main__":
     unittest.main()
