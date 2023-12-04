@@ -10,9 +10,9 @@ DESCRIPTION:   Suite of tests for testing the dashboards database
 
 
 import unittest
+from unittest.mock import patch
 import sys
-sys.path.append('/Users/zhaomuying/Desktop/MIE/mieskeleton/mie_G14')
-
+from sqlalchemy.sql import func,desc,or_
 from app import app
 from app.database.controllers import Database
 
@@ -21,6 +21,7 @@ class DatabaseTests(unittest.TestCase):
     def setUp(self):
         """Run prior to each test."""
         self.db_mod = Database()
+
 
     def tearDown(self):
         """Run post each test."""
@@ -47,10 +48,25 @@ class DatabaseTests(unittest.TestCase):
             self.assertEquals(self.db_mod.get_TOP_PRESCRIBED_ITEM(), 'Methadone HCl_Oral Soln 1mg/1ml S/F (869879) 0.14',
                               'Test top prescribed item return correct value')
 
-    # def test_get_searchterm_drug(self):
-    #     with app.app_context():
-    #         self.assertEquals()
+    @patch('app.database.controllers.db.session.query') # This also the idea of mock
+    def test_get_total_number_items(self, mock_query):
+        mock_query.return_value.first.return_value = (100,)
 
+        result = self.db_mod.get_total_number_items()
+
+        self.assertEqual(result, 100)
+    @patch('app.database.controllers.db.session.query') # This also the idea of mock
+    def test_data_cast(self, mock_query):
+        mock_query.return_value.first.return_value = (100,)
+
+        result = self.db_mod.get_Average_ACT_COST()
+        self.assertEqual(result, 100)
+        self.assertTrue(isinstance(result, int), "The datatype should be Integer after casting")
+
+    def test_num_and_pcts_identical_amount(self):
+        with app.app_context():
+            self.assertEquals(len(self.db_mod.get_prescribed_items_per_pct()), len(self.db_mod.get_distinct_pcts()) ,
+                              'Test top prescribed item return correct value')
 
 if __name__ == "__main__":
     unittest.main()

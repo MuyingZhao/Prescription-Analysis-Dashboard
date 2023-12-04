@@ -22,13 +22,13 @@ def not_found(error):
     return render_template('404.html'), 404
 
 # get and register module blueprints
-from app.views.controllers import views as views_module
+from app.webviews.controllers import views as views_module
 from app.database.controllers import database as database_module
 
 app.register_blueprint(views_module)
 app.register_blueprint(database_module)
 
 
-views = Blueprint('views',__name__)
+views = Blueprint('webviews',__name__)
 
 
