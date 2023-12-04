@@ -22,7 +22,6 @@ class DatabaseTests(unittest.TestCase):
         """Run prior to each test."""
         self.db_mod = Database()
 
-
     def tearDown(self):
         """Run post each test."""
         pass
@@ -55,6 +54,7 @@ class DatabaseTests(unittest.TestCase):
         result = self.db_mod.get_total_number_items()
 
         self.assertEqual(result, 100)
+
     @patch('app.database.controllers.db.session.query') # This also the idea of mock
     def test_data_cast(self, mock_query):
         mock_query.return_value.first.return_value = (100,)

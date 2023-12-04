@@ -39,7 +39,7 @@ class ViewTests(unittest.TestCase):
         self.db_mock = MagicMock()
         self.db_mod_patch = patch('app.webviews.controllers.db_mod',
                                   self.db_mock)  # Replaced the db_mod with mocked one.
-        # app.webviews.controller.db_mod, might occupy the keyword, folder must be renamed
+        # app.views.controller.db_mod, might occupy the keyword, folder must be renamed
         # No logic when accessing the data, so we mock it.
         self.render_template_mock = MagicMock()
         self.render_template_patch = patch('app.webviews.controllers.render_template',
